@@ -1,29 +1,25 @@
-package com.spendr.controller;
+package com.spendr.service;
 
 import com.spendr.model.Expense;
-import com.spendr.service.ExpenseService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import com.spendr.repository.ExpenseRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/expenses")
-public class ExpenseController {
+@Service
+public class ExpenseService {
 
-    private final ExpenseService expenseService;
+    private final ExpenseRepository expenseRepository;
 
-    public ExpenseController(ExpenseService expenseService) {
-        this.expenseService = expenseService;
+    public ExpenseService(ExpenseRepository expenseRepository) {
+        this.expenseRepository = expenseRepository;
     }
 
-    @PostMapping
-    public ResponseEntity<Expense> addExpense(@RequestBody Expense expense) {
-        return ResponseEntity.ok(expenseService.addExpense(expense));
+    public Expense createExpense(Expense expense) {
+        return expenseRepository.save(expense);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Expense>> getAllExpenses() {
-        return ResponseEntity.ok(expenseService.getAllExpenses());
+    public List<Expense> getAllExpenses() {
+        return expenseRepository.findAll();
     }
 }

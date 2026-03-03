@@ -4,7 +4,6 @@ import com.spendr.model.Expense;
 import com.spendr.repository.ExpenseRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -16,8 +15,7 @@ public class ExpenseService {
         this.expenseRepository = expenseRepository;
     }
 
-    public Expense addExpense(Expense expense) {
-        expense.setCreatedAt(LocalDateTime.now());
+    public Expense createExpense(Expense expense) {
         return expenseRepository.save(expense);
     }
 
