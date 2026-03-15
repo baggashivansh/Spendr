@@ -1,95 +1,70 @@
-# Spndr
+# Spendr
 
-## Personal Expense Tracker Backend
+## Personal Expense Tracking Backend
 
-Spndr is a backend service for managing personal expense records.
-It allows users to record daily spending, organize expenses by category, and retrieve structured financial data through REST APIs.
+Spendr is a personal expense tracking application built using **Java and Spring Boot**.
+It provides a structured way to record, organize, and analyze daily expenses.
 
-The goal of this project is to demonstrate backend engineering practices such as REST API design, layered architecture, relational database modeling, and containerized deployment using Docker.
+The idea for Spendr came from a common real-life problem. While making payments, many people write quick notes to remember where money was spent. Over time these notes become scattered and difficult to track.
 
-Spndr focuses on building a reliable backend system rather than a user interface.
+Spendr solves this by providing a centralized system where users can log their expenses and review spending patterns in an organized way.
 
----
-
-# Live Link
-
-Backend Service
-*(Deployment link will be added here once the service is hosted)*
+The project focuses primarily on backend system design, data modeling, and REST API development.
 
 ---
 
 # Overview
 
-Tracking personal finances becomes difficult when expenses are recorded inconsistently. People often rely on temporary notes, messages, or memory to remember where money was spent.
+Managing personal finances often becomes difficult when expenses are not recorded consistently.
 
 Common problems include:
 
-• forgetting individual expenses
+• forgetting where money was spent
+• difficulty tracking monthly spending
 • lack of structured expense records
-• difficulty reviewing monthly spending
-• no category based analysis of spending habits
+• no category-wise visibility of expenses
 
-Spndr solves this by providing a centralized backend system where expenses can be recorded and queried in a structured way.
-
----
-
-# Key Features
-
-### User Authentication
-
-Users can register and log in securely.
-
-Each user has isolated expense records so that expense data remains private to the account owner.
-
-Authentication prepares the system for multi user usage and secure API access.
+Spendr helps users maintain a clear record of their spending by allowing them to log expenses and analyze them later.
 
 ---
 
-### Expense Logging
+# How Spendr Works
 
-Users can create expense entries containing:
+Spendr operates as a backend service that stores and manages expense data.
 
-• amount
-• category
-• date
-• optional description
+### Adding an Expense
 
-Example expense entry
+1. A user submits a request to log an expense.
+2. The backend validates the input.
+3. The expense is stored in the database.
+4. The system returns confirmation to the user.
 
-Category: Food
-Amount: ₹250
-Date: 2026 03 10
-Description: Lunch
+Example flow:
 
----
-
-### Expense History
-
-Users can retrieve previously recorded expenses in chronological order.
-
-This makes it easier to review past spending behavior and maintain financial awareness.
+User → POST /api/expenses
+→ validate request
+→ store expense in database
+→ return response
 
 ---
 
-### Category Based Tracking
+### Viewing Expenses
 
-Expenses are grouped into categories such as:
+Users can retrieve all their recorded expenses.
 
-• Food
-• Transport
-• Shopping
-• Bills
-• Entertainment
+Example flow:
 
-This makes it easier to understand where most of the money is being spent.
+User → GET /api/expenses
+→ backend queries database
+→ returns list of expenses
 
 ---
 
-### Monthly Spending Summary
+### Monthly Summary
 
-Spndr can generate summaries of expenses grouped by month and category.
+Spendr can group expenses by month and category to help users understand spending patterns.
 
-Example summary
+Example summary:
 
 Month: March
 
@@ -97,27 +72,72 @@ Food: ₹3200
 Transport: ₹900
 Shopping: ₹2100
 
-This allows users to quickly analyze spending patterns.
+This helps users analyze how their money is distributed across categories.
 
 ---
 
-# How the System Works
+# Core Features
 
-Spndr operates as a backend service that receives HTTP requests and stores structured expense data.
+## User Authentication
 
-Typical request flow
+Users can register and log in to their account.
+Each user's expenses are stored separately to ensure data privacy.
+
+---
+
+## Expense Logging
+
+Users can add expenses with important details such as:
+
+• amount
+• category
+• date
+• optional description
+
+Example expense entry:
+
+Category: Food
+Amount: ₹250
+Date: 2026-03-10
+Description: Lunch
+
+---
+
+## Expense History
+
+Users can view previously recorded expenses in chronological order.
+
+This allows them to track spending behavior over time.
+
+---
+
+## Category Based Tracking
+
+Expenses can be grouped into categories such as:
+
+• Food
+• Transport
+• Shopping
+• Bills
+• Entertainment
+
+This helps users understand where most of their money is being spent.
+
+---
+
+# System Architecture
+
+Spendr follows a typical backend service architecture.
 
 Client
 ↓
-REST API Controller
+REST API (Spring Boot)
 ↓
-Service Layer (Business Logic)
+Service Layer
 ↓
-Repository Layer
-↓
-MySQL Database
+Database (MySQL)
 
-The service layer contains application logic while the database stores expense records persistently.
+The service layer contains the business logic while the database stores expense records.
 
 ---
 
@@ -134,69 +154,40 @@ Database
 
 MySQL
 
-Containerization
-
-Docker
-
 ORM
 
 JPA and Hibernate
 
 ---
 
-# System Architecture
-
-Spndr follows a layered architecture that separates responsibilities across the application.
-
-Controller Layer
-
-Handles incoming HTTP requests and returns responses.
-
-Service Layer
-
-Contains the business logic responsible for managing expenses and users.
-
-Repository Layer
-
-Handles database operations using Spring Data JPA.
-
-Database Layer
-
-Stores persistent user and expense records.
-
-This separation improves maintainability and keeps the system easier to extend.
-
----
-
 # Database Design
 
-### Users Table
+## Users Table
 
 Stores registered users.
 
-Fields
+Fields:
 
-id — primary key
-name — user name
-email — unique email address
-password_hash — encrypted password
-created_at — timestamp
+id – primary key
+name – user name
+email – unique email address
+password_hash – encrypted password
 
 ---
 
-### Expenses Table
+## Expenses Table
 
 Stores individual expense records.
 
-Fields
+Fields:
 
-id — primary key
-user_id — reference to user
-amount — expense amount
-category — expense category
-description — optional note
-expense_date — date of expense
-created_at — timestamp
+id – primary key
+user_id – reference to user
+amount – expense amount
+category – expense category
+description – optional note
+expense_date – date of expense
+created_at – timestamp
 
 ---
 
@@ -218,7 +209,7 @@ POST /api/auth/login
 
 POST /api/expenses
 
-Example request
+Request
 
 {
 "amount": 250,
@@ -233,108 +224,53 @@ Example request
 
 GET /api/expenses
 
-Returns all recorded expenses for the authenticated user.
-
----
-
-### Get Monthly Summary
-
-GET /api/expenses/summary
-
-Returns categorized monthly spending information.
-
----
-
-# Running the Project Locally
-
-### 1 Clone the Repository
-
-git clone https://github.com/shivanshbagga/spndr.git
-
-cd spndr
-
----
-
-### 2 Configure Database
-
-Create a MySQL database.
-
-Example
-
-spndr_db
-
-Update the database credentials in `application.properties`.
-
----
-
-### 3 Run the Application
-
-Using Maven
-
-./mvnw spring-boot:run
-
-The server will start on
-
-http://localhost:8080
-
----
-
-# Running with Docker
-
-Build Docker image
-
-docker build -t spndr .
-
-Run container
-
-docker run -p 8080:8080 spndr
-
-This ensures the application runs consistently across different environments.
+Returns all recorded expenses for the user.
 
 ---
 
 # Project Structure
 
-spndr
+spendr
+├── controller
+│   └── ExpenseController.java
+│
+├── service
+│   └── ExpenseService.java
+│
+├── repository
+│   └── ExpenseRepository.java
+│
+├── model
+│   ├── Expense.java
+│   └── User.java
+│
+└── config
+└── SecurityConfig.java
 
-src/main/java/com/shivansh/spndr
-
-controller
-ExpenseController.java
-AuthController.java
-
-service
-ExpenseService.java
-UserService.java
-
-repository
-ExpenseRepository.java
-UserRepository.java
-
-model
-Expense.java
-User.java
-
-config
-SecurityConfig.java
+This layered structure separates controllers, services, and database logic.
 
 ---
 
 # Future Improvements
 
-Spndr can evolve into a more advanced financial tracking system.
+Spendr can evolve into a more advanced financial tracking system.
 
-Possible enhancements include
+Possible enhancements:
 
-• budget management
+• expense analytics dashboard
+• budget tracking
 • recurring expense tracking
-• financial analytics dashboard
-• export reports in CSV or PDF
-• spending insights and notifications
+• export reports (PDF or CSV)
+• AI-powered spending insights
+
+---
+
+# Status
+
+Project under development.
 
 ---
 
 # Author
 
 Built by **Shivansh Bagga**
-

@@ -1,0 +1,50 @@
+
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Logs
+*.log
+logs/
+
+# Spring Boot
+*.pid
+*.seed
+*.pid.lock
+
+# IDE - IntelliJ
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# VS Code
+.vscode/
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Environment variables
+.env
+
+# H2 database files
+*.mv.db
+*.trace.db
+
+# Build files
+*.class
+*.jar
+*.war
+*.ear
+
+# Node (if frontend added later)
+node_modules/
+
+# Temporary files
+*.tmp
+*.temp
+
