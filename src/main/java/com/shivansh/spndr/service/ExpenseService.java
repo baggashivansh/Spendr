@@ -25,6 +25,7 @@ public class ExpenseService {
         expense.setTitle(request.getTitle());
         expense.setAmount(request.getAmount());
         expense.setCategory(request.getCategory());
+        expense.setDate(request.getDate());
         expense.setUserId(userId);
 
         Expense saved = expenseRepository.save(expense);
@@ -34,7 +35,7 @@ public class ExpenseService {
                 saved.getTitle(),
                 saved.getAmount(),
                 saved.getCategory(),
-                saved.getUserId()
+                saved.getDate()
         );
     }
 
@@ -47,7 +48,7 @@ public class ExpenseService {
                         expense.getTitle(),
                         expense.getAmount(),
                         expense.getCategory(),
-                        expense.getUserId()
+                        expense.getDate()
                 ))
                 .collect(Collectors.toList());
     }
