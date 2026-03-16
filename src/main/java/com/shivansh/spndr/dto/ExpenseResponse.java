@@ -13,6 +13,14 @@ public class ExpenseResponse {
     public ExpenseResponse() {
     }
 
+    public ExpenseResponse(Long id, String title, double amount, String category, LocalDate date) {
+        this.id = id;
+        this.title = title;
+        this.amount = amount;
+        this.category = category;
+        this.date = date;
+    }
+
     public Long getId() {
         return id;
     }

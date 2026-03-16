@@ -18,9 +18,7 @@ public class Expense {
 
     private LocalDate date;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private Long userId;
 
     public Expense() {
     }
@@ -61,11 +59,11 @@ public class Expense {
         this.date = date;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "https://spndr-tracker.netlify.app")
 @RestController
 @RequestMapping("/expenses")
+@CrossOrigin(origins = "https://spndr-tracker.netlify.app")
 public class ExpenseController {
 
     private final ExpenseService expenseService;
@@ -32,8 +32,8 @@ public class ExpenseController {
         return expenseService.addExpense(userId, request);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteExpense(@PathVariable Long id) {
-        expenseService.deleteExpense(id);
+    @DeleteMapping("/{expenseId}")
+    public void deleteExpense(@PathVariable Long expenseId) {
+        expenseService.deleteExpense(expenseId);
     }
 }

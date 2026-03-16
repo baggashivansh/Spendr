@@ -1,34 +1,58 @@
-package com.shivansh.spndr.controller;
+package com.shivansh.spndr.service;
 
 import com.shivansh.spndr.dto.ExpenseRequest;
 import com.shivansh.spndr.dto.ExpenseResponse;
-import com.shivansh.spndr.service.ExpenseService;
-import org.springframework.web.bind.annotation.*;
+import com.shivansh.spndr.model.Expense;
+import com.shivansh.spndr.repository.ExpenseRepository;
+
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@RestController
-@RequestMapping("/expenses")
-public class ExpenseController {
+@Service
+public class ExpenseService {
 
-    private final ExpenseService expenseService;
+    private final ExpenseRepository expenseRepository;
 
-    public ExpenseController(ExpenseService expenseService) {
-        this.expenseService = expenseService;
+    public ExpenseService(ExpenseRepository expenseRepository) {
+        this.expenseRepository = expenseRepository;
     }
 
-    @PostMapping("/{userId}")
-    public ExpenseResponse addExpense(@PathVariable Long userId, @RequestBody ExpenseRequest request) {
-        return expenseService.addExpense(userId, request);
+    public ExpenseResponse addExpense(Long userId, ExpenseRequest request) {
+
+        Expense expense = new Expense();
+        expense.setTitle(request.getTitle());
+        expense.setAmount(request.getAmount());
+        expense.setCategory(request.getCategory());
+        expense.setUserId(userId);
+
+        Expense saved = expenseRepository.save(expense);
+
+        return new ExpenseResponse(
+                saved.getId(),
+                saved.getTitle(),
+                saved.getAmount(),
+                saved.getCategory(),
+                saved.getUserId()
+        );
     }
 
-    @GetMapping("/{userId}")
-    public List<ExpenseResponse> getUserExpenses(@PathVariable Long userId) {
-        return expenseService.getUserExpenses(userId);
+    public List<ExpenseResponse> getExpensesByUser(Long userId) {
+
+        return expenseRepository.findByUserId(userId)
+                .stream()
+                .map(expense -> new ExpenseResponse(
+                        expense.getId(),
+                        expense.getTitle(),
+                        expense.getAmount(),
+                        expense.getCategory(),
+                        expense.getUserId()
+                ))
+                .collect(Collectors.toList());
     }
 
-    @DeleteMapping("/{expenseId}")
-    public void deleteExpense(@PathVariable Long expenseId) {
-        expenseService.deleteExpense(expenseId);
+    public void deleteExpense(Long expenseId) {
+        expenseRepository.deleteById(expenseId);
     }
 }
